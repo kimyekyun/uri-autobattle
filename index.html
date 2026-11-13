@@ -2577,7 +2577,7 @@ function netInit() {
   let saved = ""; try { saved = localStorage.getItem("uri-net-name") || ""; } catch (e) {}
   $("netname").value = saved;
   $("netcode").value = String(1000 + Math.floor(Math.random() * 9000));
-  // claude.ai 안에서는 Claude의 방 기능을, 일반 웹사이트·파일에서는 MQTT 중계(mqttroom.js)를 써요
+  // claude.ai 안에서는 Claude의 방 기능을, 일반 웹사이트에서는 MQTT 중계(mqttroom.js)를 써요
   const inClaude = !!(window.claude && window.claude.use);
   const use = inClaude ? window.claude.use("room") : Promise.resolve(typeof makePeerRoom === "function" ? makePeerRoom() : null);
   use.then((room) => {
@@ -2775,7 +2775,7 @@ function netFinish() {
 //  · index.html 을 그냥 열면(claude.ai 밖) 공용 기능은 꺼지고 예전처럼 동작해요.
 // ============================================================
 "use strict";
-const SITE_CARDS = { "진성욱": "cards/c00.jpg", "이현": "cards/c01.jpg", "박희찬": "cards/c02.jpg", "이보경": "cards/c03.jpg", "최효민": "cards/c04.jpg", "임시온": "cards/c05.jpg", "이준희": "cards/c06.jpg", "김현우": "cards/c07.jpg", "전하율": "cards/c08.jpg", "박준서": "cards/c09.jpg", "손태민": "cards/c10.jpg", "윤동욱": "cards/c11.jpg" };
+const SITE_CARDS = {"진성욱":"cards/c00.jpg","이현":"cards/c01.jpg","박희찬":"cards/c02.jpg","이보경":"cards/c03.jpg","최효민":"cards/c04.jpg","임시온":"cards/c05.jpg","이준희":"cards/c06.jpg","김현우":"cards/c07.jpg","전하율":"cards/c08.jpg","박준서":"cards/c09.jpg","손태민":"cards/c10.jpg","윤동욱":"cards/c11.jpg"};
 const SHARED = { db: null, assets: null, ref: null, cards: {}, backdrop: null, shownBackdrop: null };
 const blobUrl = (id) => "/_blob/" + id;
 // 이 사람이 올리면 모두에게 보이나요? (페이지를 고칠 수 있는 사람만)
@@ -2791,7 +2791,7 @@ const BUILTIN_FIRST = new Set(["윤동욱"]);
 const sharedCard = (d) => { const n = DEFS[d].n, b = window.claude ? BUILTIN_CARDS[n] : null; return (BUILTIN_FIRST.has(n) && b) || SHARED.cards[n] || b || null; };
 
 function photosInit() {
-  if (!window.claude && typeof SITE_CARDS !== "undefined") DEFS.forEach((def, d) => { const f = SITE_CARDS[def.n]; if (f && !hasCustomCard(d)) { PORTRAIT[d] = f; BASE_PORTRAIT[d] = f; } }); // 웹 버전: 같이 올린 사진 파일
+  if (!window.claude) DEFS.forEach((def, d) => { const f = SITE_CARDS[def.n]; if (f && !hasCustomCard(d)) { PORTRAIT[d] = f; BASE_PORTRAIT[d] = f; } }); // 웹 버전: 같이 올린 사진 파일
   if (window.claude) DEFS.forEach((def, d) => { const id = BUILTIN_CARDS[def.n]; if (id && !hasCustomCard(d)) PORTRAIT[d] = blobUrl(id); }); // 미리 넣어 둔 사진부터 보여요
   if (!window.claude || !window.claude.use) return;
   Promise.all([window.claude.use("db"), window.claude.use("assets")]).then(([db, assets]) => {

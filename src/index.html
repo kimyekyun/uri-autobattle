@@ -1,0 +1,102 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>우리반 오토배틀</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap">
+<link rel="stylesheet" href="style.css">
+<div id="game">
+  <canvas id="gl"></canvas><canvas id="cv"></canvas>
+  <div class="hud mini"><button class="gearbtn" id="gear" aria-label="설정" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></button><div class="menu" id="menu" hidden><button id="speed">속도 ×1</button><button id="mute">소리 켜짐</button><button id="qual">화질 높음</button><label class="menubtn" for="bgfile">배경 사진 넣기</label><input type="file" id="bgfile" accept="image/*" hidden><input type="file" id="cardfile" accept="image/*" hidden><button id="bgclear">배경 사진 빼기</button><button id="cardmenu">친구 카드 사진 바꾸기</button></div></div>
+  <div class="hud topbar">
+    <div class="pill"><span id="stage">1-1</span><span class="track" id="track"></span><span class="rtype" id="rtype">급식 줄</span></div>
+    <div class="timer"><i id="timerfill"></i></div>
+    <button class="tbtn" id="ready"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z" fill="currentColor" stroke="none"/></svg>시작</button>
+    <div class="pill stat-hp" id="hp">♥ 100</div>
+  </div>
+  <div class="hud pracbar" id="prac" hidden>
+    <span class="praclbl">김예균</span><button data-star="1">★1</button><button data-star="2">★2</button><button data-star="3">★3</button>
+    <span class="pracsep"></span><span class="praclbl">상대</span><button data-foe="dummy">허수아비</button><button data-foe="team">강한 적 팀</button><button data-foe="juhwan">정주환 ★3</button>
+    <span class="pracsep"></span><button id="pracmana">바로 스킬 켜짐</button><button id="pracstop">전투 멈추기</button><button id="pracexit">나가기</button>
+  </div>
+  <div class="hud traits" id="traits"></div>
+  <div class="hud players" id="players"></div>
+  <div class="info" id="info"></div>
+  <div class="hud dock" id="dock">
+    <div class="dockbar">
+      <div class="xpwrap" id="xpwrap"><span class="lv"><span id="lvl">1</span>레벨</span><span class="xptxt" id="xptxt">0/2</span><i id="xpfill" hidden></i></div>
+      <div class="odds" id="odds"></div>
+      <div class="goldpill" id="goldbag"><span class="coin"></span><span id="gold">0</span></div>
+      <span class="interest" id="goldsub"></span>
+      <button class="lockbtn" id="lock" aria-label="상점 잠금" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path class="shackle" d="M8 11V8a4 4 0 0 1 8 0"/></svg></button>
+    </div>
+    <div class="dockbody">
+      <div class="dockbtns">
+        <button class="cbtn" id="buyxp"><span class="lbl">경험치 구매</span><span class="cost">● 4</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 14l6-6 6 6" /><path d="M6 19l6-6 6 6" opacity=".55"/></svg></button>
+        <button class="cbtn gold" id="reroll"><span class="lbl">새로고침</span><span class="cost">● 2</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 8a8 8 0 1 0 1 6"/><path d="M20 3v5h-5"/></svg></button>
+      </div>
+      <div class="shop" id="shop"></div>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="aug" hidden>
+  <div class="augwrap"><h2 class="augtier" id="augtier">실버 증강</h2><div class="augs" id="augs"></div><button class="go" id="augre">다시 뽑기 (1번)</button></div>
+</div>
+<div class="overlay" id="cards" hidden>
+  <div class="ov-box"><h1>카드 사진 바꾸기</h1><p class="guide" id="cardguide">바꿀 친구를 고르면 사진첩이 열려요. 사진은 이 기기에만 저장돼요.</p><div class="cardgrid" id="cardgrid"></div><button class="go" id="cardsclose">닫기</button></div>
+</div>
+<div class="overlay" id="rotate">
+  <div class="ov-box"><h1>가로로 돌려주세요</h1><p>이 게임은 가로 화면에 맞춰져 있어요.</p><button class="go" id="rotok">그래도 세로로 하기</button></div>
+</div>
+<div class="overlay" id="ov">
+  <div class="ov-box">
+    <h1 id="ovtitle">우리반 오토배틀</h1>
+    <p id="ovtext">8개 반이 겨루는 오토배틀. 마지막까지 살아남으면 1등!</p>
+    <ul id="ovrules">
+      <li>아래쪽 상점에서 친구를 사서 경기장에 배치해요 (탭하거나 끌어서)</li>
+      <li>같은 친구 3명 → ★2, ★2 셋 → ★3</li>
+      <li>같은 특성을 모으면 왼쪽 시너지가 켜져요</li>
+      <li>몬스터를 이기면 골드 구슬이 떨어져요. 마스코트로 주우세요</li>
+      <li>급식 줄 라운드: 체력이 낮은 반부터 친구를 하나씩 골라요</li>
+      <li>빈 땅을 탭하면 내 마스코트가 걸어가요</li>
+    </ul>
+    <p id="best" style="font-size:13px;color:var(--chalk-dim)"></p>
+    <div class="ovbtns" id="ovbtns"><button class="go" id="start">혼자 하기</button><button class="go alt" id="online" disabled>친구와 같이 하기</button><button class="go prac" id="practice">연습장</button></div>
+    <p class="netnote" id="netnote">온라인 연결을 확인하는 중…</p>
+    <div class="net" id="net" hidden>
+      <div class="netrow"><label for="netname">내 이름</label><input id="netname" maxlength="8" autocomplete="nickname" placeholder="예: 예균"></div>
+      <div class="netrow"><label for="netcode">방 코드</label><input id="netcode" maxlength="12" autocomplete="off"></div>
+      <p class="netguide">친구들과 같은 방 코드를 쓰면 한 방에 모여요. 친구는 게임 주인이 공유 메뉴에서 이메일로 초대한 claude.ai 계정으로 로그인해서 열어야 해요. 링크만 받아서는 방에 못 들어와요.</p>
+      <button class="go" id="netjoin">방 들어가기</button>
+      <div class="netlobby" id="netlobby" hidden><ul class="netlist" id="netlist"></ul><p class="netmsg" id="netmsg"></p><button class="go" id="netstart" hidden>게임 시작</button></div>
+      <button class="linkbtn" id="netback">뒤로</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/environments/RoomEnvironment.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script src="js/friends.js"></script>
+<script src="js/skills.js"></script>
+<script src="js/augments.js"></script>
+<script src="js/constants.js"></script>
+<script src="js/game.js"></script>
+<script src="js/battle.js"></script>
+<script src="js/robot.js"></script>
+<script src="js/weapons.js"></script>
+<script src="js/sound.js"></script>
+<script src="js/online.js"></script>
+<script src="js/photos.js"></script>
+<script src="js/figure.js"></script>
+<script src="js/hero.js"></script>
+<script src="js/render3d.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/practice.js"></script>
+
+</body></html>
