@@ -373,7 +373,7 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2
     <div class="net" id="net" hidden>
       <div class="netrow"><label for="netname">내 이름</label><input id="netname" maxlength="8" autocomplete="nickname" placeholder="예: 예균"></div>
       <div class="netrow"><label for="netcode">방 코드</label><input id="netcode" maxlength="12" autocomplete="off"></div>
-      <p class="netguide">친구들과 같은 방 코드를 쓰면 한 방에 모여요. 친구들도 이 파일(같은 버전)을 열고 같은 방 코드를 적으면 돼요. 인터넷이 연결돼 있어야 해요.</p>
+      <p class="netguide">친구들과 같은 방 코드를 쓰면 한 방에 모여요. 친구들도 같은 링크를 열고 같은 방 코드를 적으면 돼요. 인터넷이 연결돼 있어야 해요.</p>
       <button class="go" id="netjoin">방 들어가기</button>
       <div class="netlobby" id="netlobby" hidden><ul class="netlist" id="netlist"></ul><p class="netmsg" id="netmsg"></p><button class="go" id="netstart" hidden>게임 시작</button></div>
       <button class="linkbtn" id="netback">뒤로</button>
@@ -429,14 +429,14 @@ const DEFS = [
 const TRAITS = {
   "운동광":   { t: [2, 4, 6], d: "운동광 체력 +20% / +40% / +50%" },
   "지는 거 못 참음":   { t: [2, 4, 6], d: "지는 거 못 참음 공격력 +20% / +45% / +60%, 치명타 20%" },
-  "공부는 잘함":   { t: [2, 4, 6], d: "공부는 잘함 스킬 피해 +30% / +80% / +160%" },
+  "공부는 잘함":   { t: [2, 4, 6], d: "공부는 잘함 스킬 세기(피해·회복·보호막) +60% / +110% / +180%" },
   "다 퍼줌": { t: [2, 4],   d: "아군 전체에게 최대 체력 15% / 50% 만큼 보호막" },
   "축구부":   { t: [2, 3, 4], d: "축구부 공격 속도 +30% / +55% / +65%" },
   "수학왕":   { t: [1],       d: "박준서 마나 회복 +60%" },
   "댄스부":   { t: [2],       d: "은혜린·최윤서 둘 다 있으면: 댄스부 공격 속도 +25%, 은혜린 춤추기 무대가 1초 더 오래 가요" },
   "프로게이머": { t: [1],     d: "조하윤 공격 속도 +30%" },
   "전교 1등": { t: [1],      d: "손태민 스킬 피해 +40%" },
-  "합체로봇": { t: [4],      d: "조하윤·박희찬·윤동욱·이보경 4명이 모두 보드에 있으면 전투 시작 때 4인 합체로봇으로 합체!" },
+  "합체로봇": { t: [4],      d: "조하윤·박희찬·윤동욱·이보경 4명이 모두 보드에 있으면 전투 시작 때 4인 합체로봇으로 합체! 4명 모두 ★3이면 초합체로봇이 하늘에서 내려와 빛의 대검으로 전장 전체를 베어요" },
   "신":       { t: [1],       d: "신의 가호: 아군 전체 공격력·체력 +12%" },
 };
 // ---------- 옷 ----------
@@ -502,7 +502,7 @@ const LOOKS = {
 // 학교 옷 대신 각자 스킬에 어울리는 판타지 영웅 차림이에요. 표에 있는 친구는 이 모습이 OUTFITS·LOOKS 보다 먼저 쓰여요.
 // kit: guard(판금 기사) warrior(전사) ranger(사냥꾼) mage(마법사) bard(음유시인) god(신) monk(무도가) assassin(암살자) juggernaut(중갑 전사)
 // head: helm(투구) horned(뿔 투구) hood(두건) circlet(머리띠 관) mask(복면) visor(빛나는 눈가리개) crown(왕관) band(머리 끈) none
-// weapon: sword blades greataxe hammer bow crossbow rifle tome shield bo quill gauntlets horn astrolabe abyssorb spear crystalstaff sunstaff
+// weapon: sword blades greataxe hammer bow crossbow rifle tome shield bo quill gauntlets horn astrolabe abyssorb spear crystalstaff sunstaff pizzabox(피자 상자) mawshield(포크 + 이빨 방패)
 // metal: steel gold dark bronze, scar: 1 이면 볼에 흉터, paint: 얼굴 문양 색
 const CHAMPS = {
   "이승찬": { title: "새벽빛 사제", kit: "bard", top: 0xd88a34, bottom: 0x5a3e26, accent: 0xfff0c0, metal: "gold", hair: "curly", hc: 0x6b4226, skin: 2, head: "circlet", weapon: "sunstaff", coat: 1 },
@@ -517,7 +517,7 @@ const CHAMPS = {
   "김민기": { title: "룬 필경사", kit: "mage", top: 0x5a3c9a, bottom: 0x2e2840, accent: 0xd8b0ff, metal: "gold", hair: "mushroom", hc: 0x3a291c, skin: 2, head: "hood", weapon: "quill", coat: 1 },
   "임시온": { title: "철문 수문장", kit: "juggernaut", top: 0x8a7a1a, bottom: 0x1e2126, accent: 0xf0e040, metal: "dark", hair: "side", hc: 0x2a1d15, skin: 1, head: "horned", weapon: "gauntlets" },
   "최윤서": { title: "그물 사냥꾼", kit: "ranger", top: 0x2a6a58, bottom: 0x2a2e2a, accent: 0xa8f0d0, metal: "bronze", hair: "wavy", hc: 0x1c1612, skin: 2, head: "hood", weapon: "net" },
-  "박현호": { title: "전장 음유시인", kit: "bard", top: 0x9a2a30, bottom: 0x2a3550, accent: 0xf2e6c8, metal: "gold", hair: "side", hc: 0x3a291c, skin: 2, head: "none", weapon: "pizzabox", coat: 1 },
+  "박현호": { title: "피자 파티 기사", kit: "bard", top: 0x9a2a30, bottom: 0x2a3550, accent: 0xf2e6c8, metal: "gold", hair: "side", hc: 0x3a291c, skin: 2, head: "none", weapon: "pizzabox", coat: 1 },
   "조하윤": { title: "심연의 사수", kit: "assassin", top: 0x16161e, bottom: 0x101016, accent: 0x3fd8ff, metal: "dark", hair: "bowl", hc: 0x101014, tip: 0x3fd8ff, skin: 0, head: "visor", weapon: "rifle", coat: 1 },
   "박희찬": { title: "불꽃 창기병", kit: "ranger", top: 0xc8102e, bottom: 0xe8e8f0, accent: 0xffd36b, num: "7", metal: "steel", hair: "wavy", hc: 0x2a1d15, skin: 1, head: "circlet", weapon: "spear" },
   "진성욱": { title: "강철 파괴자", kit: "juggernaut", top: 0x4a4e56, bottom: 0x1e2126, accent: 0xe8402e, metal: "dark", hair: "buzz", hc: 0x141414, skin: 3, head: "helm", weapon: "greataxe", scar: 1 },
@@ -535,15 +535,16 @@ const TUNE = {
   "최효민": { hp: 0.86, ad: 0.86, sk: 0.86 },
   "전하율": { hp: 1.13, ad: 1.13, sk: 1.13 },
   "이준희": { hp: 0.92, ad: 0.92, sk: 0.92 },
-  "김현우": { hp: 0.89, ad: 0.89, sk: 0.89 },
+  "김현우": { hp: 1.05, ad: 1.05, sk: 1.05 },
   "이보경": { hp: 0.96, ad: 0.96, sk: 0.96 },
   "윤동욱": { hp: 0.87, ad: 0.87, sk: 0.87 },
   "은혜린": { hp: 1.20, ad: 1.20, sk: 1.20 },
   "김민기": { hp: 1.20, ad: 1.20, sk: 1.20 },
   "임시온": { hp: 0.85, ad: 0.85, sk: 0.85 },
   "조하윤": { hp: 0.87, ad: 0.87, sk: 0.87 },
-  "최윤서": { hp: 0.90, ad: 0.90, sk: 0.90 },
-  "박현호": { hp: 1.25, ad: 1.25, sk: 1.25 },
+  "최윤서": { hp: 1.05, ad: 1.05, sk: 1.05 },
+  "박현호": { hp: 1.60, ad: 1.60, sk: 1.60 },
+  "김예균": { hp: 0.93, ad: 0.93, sk: 0.93 }, // 축구부를 얻어 강해진 만큼 낮춤
   "박희찬": { hp: 1.07, ad: 1.07, sk: 1.07 },
   "진성욱": { hp: 0.97, ad: 0.97, sk: 0.97 },
   "박준서": { hp: 0.88, ad: 0.88, sk: 0.88 },
@@ -1668,7 +1669,7 @@ function makeFighter(spec, team, r, c, cnt, buff) {
   const L = (t) => traitLvl(t, cnt[t] || 0), has = (t) => (def.t.includes(t) ? L(t) : 0);
   f.maxHp *= [1, 1.2, 1.4, 1.5][has("운동광")];
   if (has("지는 거 못 참음")) { f.ad *= [1, 1.2, 1.45, 1.6][has("지는 거 못 참음")]; f.crit = 0.2; }
-  f.amp = [1, 1.3, 1.8, 2.6][has("공부는 잘함")];
+  f.amp = 1; f.power *= [1, 1.6, 2.1, 2.8][has("공부는 잘함")]; // 공부는 잘함: 스킬 세기(피해·회복·보호막 모두) 증가
   f.as0 *= [1, 1.3, 1.55, 1.65][has("축구부")];
   if (has("수학왕")) f.mgain = 1.6;
   if (has("댄스부")) { f.dance = 1; f.as0 *= 1.25; } // 댄스부(은혜린·최윤서) 2명: 공격 속도 +25%, 은혜린 춤추기 무대 1초 더
@@ -1906,7 +1907,7 @@ function stepZones(B, dt) {
 //  buildRobot: 로봇 3D 모양
 // ============================================================
 "use strict";
-// 조하윤 + 박희찬 → 합체로봇
+// 네 명이 모두 보드에 있으면 전투 시작 때 합체로봇으로 합체 (모두 ★3이면 초합체로봇)
 const ROBOT_NAME = "4인 합체로봇 (하윤·희찬·동욱·보경)";
 const ROBOT_MEMBERS = ["조하윤", "박희찬", "윤동욱", "이보경"];
 const ROBOT_COLS = ["#3fd8ff", "#ff8a2a", "#f0ece0", "#5ae08a"]; // 합체 연출에 쓰는 네 친구 색 (하윤·희찬·동욱·보경)
@@ -1921,6 +1922,7 @@ function combineRobot(f, team, visual) {
     amp: Math.max(...ms.map((m) => m.amp)), crit: Math.max(...ms.map((m) => m.crit)), power: sum("power") * 0.45,
     shield: sum("shield"), tgt: null, dmg: 0, flash: 0, lunge: 0,
   });
+  robot.maxHp *= ROBOT_K; robot.ad *= ROBOT_K; robot.power *= ROBOT_K; // 네 명을 모은 보상이 되도록 (같은 골드 무작위 팀 상대 약 55%)
   if (ms.every((m) => m.star >= 3)) { // 네 명 모두 ★3: 초합체로봇 (정주환 ★3 과 비슷한 세기)
     const K = MEGA_K;
     Object.assign(robot, { mega: 1, maxHp: robot.maxHp * K.hp, ad: robot.ad * K.ad, power: robot.power * K.sk, ar: Math.min(0.75, robot.ar + 0.05), mana: robot.mm });
@@ -1933,26 +1935,29 @@ function combineRobot(f, team, visual) {
     robot.combo = { t: 0, dur: 3.2, cx, cz, members: ms.map((m) => { const x = worldX(m.X), z = worldZ(m.Y); return { m, a0: Math.atan2(z - cz, x - cx), r0: Math.max(0.8, Math.hypot(x - cx, z - cz)) }; }), ring: 0 };
   }
 }
-const MEGA_K = { hp: 4.2, ad: 4.2, sk: 4.2 }; // 초합체로봇 배율 (정주환 ★3 과 1대1이 비슷하도록 맞춘 값)
-// 초합체로봇 필살기: 대상을 향해 일직선으로 돌진! 지나가는 길의 적을 모두 들이받아요
-const MEGA_SK = { s: "초합체 돌진!", d: (P) => `가장 먼 적을 향해 일직선으로 돌진해 지나가는 길의 적 모두 공격력×2 + ${Math.round(260 * P)} 피해 + 1.2초 기절`,
-  run(B, u, P, t, al, fo) {
-    const live = fo.filter((o) => o.alive); if (!live.length) return;
-    const tg = live.slice().sort((a, b) => hexDist(b, u) - hexDist(a, u))[0];
-    const ax = u.X, ay = u.Y, dx = tg.X - ax, dy = tg.Y - ay, L2 = dx * dx + dy * dy || 1;
-    const onPath = live.filter((o) => { const k = Math.max(0, Math.min(1, ((o.X - ax) * dx + (o.Y - ay) * dy) / L2)); return Math.hypot(ax + dx * k - o.X, ay + dy * k - o.Y) <= 0.9; });
-    for (const o of onPath) { dealDamage(B, u, o, u.ad * 2 + 260 * P, "skill"); o.stunT = Math.max(o.stunT || 0, 1.2); addFx(B, o.X, o.Y, 1.0, "#ffd36b", 0.4); }
-    // 대상 너머(없으면 옆) 빈 칸으로 미끄러져 들어가요
-    const occ = new Set(B.f.filter((o) => o.alive && o !== u).map((o) => o.r * COLS + o.c));
-    const free = neighbors(tg.r, tg.c).filter(([r, c]) => !occ.has(r * COLS + c));
-    if (free.length) { free.sort((a, b) => hexDistRC(b[0], b[1], u.r, u.c) - hexDistRC(a[0], a[1], u.r, u.c)); [u.r, u.c] = free[0]; }
-    addHuge(B, u, "초합체 돌진!", "#ffffff", "#ffd36b", 3.2);
-    if (B.visual) {
-      B.zones.push({ kind: "tackle", step: stepTimer, team: u.team, owner: u, ax, ay, X: tg.X, Y: tg.Y, t: 0, dur: 0.6, col: "#ffd36b" });
-      for (let i = 0; i < 5; i++) B.fx.push({ kind: "puff", X: ax + dx * i / 5, Y: ay + dy * i / 5, t: 0.3 + i * 0.06, t0: 0.3 + i * 0.06 });
-      S.shake = Math.max(S.shake || 0, 0.45); sfx("boom");
-    }
+let ROBOT_K = 1.16; // 일반 합체로봇 배율 (원래는 네 명을 모으면 오히려 손해였어요: 같은 골드 무작위 팀 상대 34%)
+const MEGA_K = { hp: 3.53, ad: 3.53, sk: 3.53 }; // 초합체로봇 배율 (정주환 ★3 과 1대1이 비슷하도록 맞춘 값)
+// 초합체로봇 필살기: 거대한 빛의 대검을 들어 올렸다가 전장 전체를 한 번에 베어요
+const MEGA_SLASH_AT = 0.65;
+const MEGA_SK = { s: "초합체 대검!", d: (P) => `빛의 대검을 들어 올려 전장 전체를 베어요. 적 모두 공격력×2 + ${Math.round(260 * P)} 피해 + 1.2초 기절`,
+  run(B, u, P) {
+    B.zones.push({ kind: "megasword", step: stepMegaSword, team: u.team, owner: u, P, X: u.X, Y: u.Y, t: 0, dur: 1.6, hit: 0 });
+    addHuge(B, u, "초합체 대검!", "#ffffff", "#ffd36b", 3.2);
+    if (B.visual) sfx("charge");
   } };
+function stepMegaSword(B, z, dt) {
+  const u = z.owner; z.t += dt; z.X = u.X; z.Y = u.Y;
+  if (!z.hit && z.t >= MEGA_SLASH_AT) {
+    z.hit = 1;
+    if (u.alive) B.f.filter((o) => o.alive && o.team !== z.team).forEach((o) => {
+      dealDamage(B, u, o, u.ad * 2 + 260 * z.P, "skill");
+      if (o.alive) o.stunT = Math.max(o.stunT || 0, 1.2);
+      addFx(B, o.X, o.Y, 1.1, "#ffd36b", 0.4); addFx(B, o.X, o.Y, 0.6, "#ffffff", 0.3);
+    });
+    if (B.visual) { S.shake = Math.max(S.shake || 0, 0.7); sfx("boom"); sfx("crit"); }
+  }
+  if (z.t >= z.dur) z.done = 1;
+}
 const ROBOT_SK = { s: "합체 필살기: ¡Gol Final!", d: () => "축구공 5개를 연속으로 차서 대상과 주변 적에게 피해",
   run(B, u, P, t, al, fo) {
     const live = fo.filter((o) => o.alive); if (!live.length) return;
@@ -2000,7 +2005,7 @@ function robotAssemble(ud, a) {
   ud.eyeOn = a >= 1;
 }
 // 네 친구 영웅 색을 합친 메카: 머리·가슴 = 박희찬(파랑·주황), 어깨·방패 = 이보경(초록·금), 다리 = 윤동욱(흰·검정), 팔 대포·추진기 = 조하윤(검정·청록)
-function buildRobot(enemy) {
+function buildRobot(enemy, mega) {
   const g = new THREE.Group(); g.rotation.order = "YXZ";
   const ud = g.userData; ud.mats = []; ud.walk = 0; ud.move = 0; ud.restZ = [-0.2, 0.2];
   const T = (hex) => { const m = toonMat(hex); ud.mats.push(m); return m; };
@@ -2113,6 +2118,15 @@ function buildRobot(enemy) {
       add(new THREE.SphereGeometry(0.06, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2), T(0x9fe4ff), 0, 0.02, 0.09, cg, Math.PI / 2, 0, 0).scale.set(0.8, 1.6, 0.6); // 조하윤 제트기 조종석
     }
     ud.arms.push(sh); ud.elbows.push(el);
+  }
+  if (mega) { // 초합체로봇: 오른손에 빛의 대검
+    const sw = new THREE.Group(); sw.position.set(0, -0.12, 0.12); sw.rotation.x = -1.25; ud.cannon.add(sw); ud.sword = sw;
+    cyl(0.04, 0.04, 0.26, black, 0, 0.05, 0, sw);
+    box(0.42, 0.07, 0.1, gold, 0, -0.1, 0, sw);
+    box(0.08, 0.08, 0.12, cyan, 0, -0.1, 0.03, sw);
+    const blade = new THREE.Mesh(new THREE.BoxGeometry(0.14, 1.5, 0.035), glowM(0xbff4ff, 1.4)); blade.position.y = -0.88; sw.add(blade);
+    const edge = new THREE.Mesh(new THREE.BoxGeometry(0.2, 1.56, 0.012), glowM(0xffd36b, 2.2)); edge.position.y = -0.9; sw.add(edge);
+    ud.blade = blade;
   }
   bakeFigure(g, ud); // 친구들처럼 만화 음영 + 외곽선
   // 합체 조립 연출용: 부품마다 제자리와 날아올 방향
@@ -2554,7 +2568,7 @@ function netInit() {
   let saved = ""; try { saved = localStorage.getItem("uri-net-name") || ""; } catch (e) {}
   $("netname").value = saved;
   $("netcode").value = String(1000 + Math.floor(Math.random() * 9000));
-  // claude.ai 안에서는 Claude의 방 기능을, 일반 웹사이트·파일에서는 PeerJS(브라우저끼리 직접 연결)를 써요
+  // claude.ai 안에서는 Claude의 방 기능을, 일반 웹사이트·파일에서는 MQTT 중계(mqttroom.js)를 써요
   const inClaude = !!(window.claude && window.claude.use);
   const use = inClaude ? window.claude.use("room") : Promise.resolve(typeof makePeerRoom === "function" ? makePeerRoom() : null);
   use.then((room) => {
@@ -2593,7 +2607,7 @@ function netLobby() {
   $("netlist").innerHTML = lobby.slice(0, 8).map((p, i) => `<li><span class="dot${p.guest ? " g" : ""}"></span>${esc(cleanName(p.presence.n) || "이름 없음")}${p.sameTab ? " <em>나</em>" : ""}${i === 0 ? " <small>방장</small>" : ""}</li>`).join("");
   const n = Math.min(8, lobby.length);
   $("netmsg").textContent = n < 2
-    ? `친구에게 이 파일과 방 코드 ${NET.code}를 보내 주세요. 친구도 파일을 열고 같은 방 코드를 적으면 들어와요. 2명부터 시작할 수 있어요.`
+    ? `친구에게 이 링크와 방 코드 ${NET.code}를 알려주세요. 친구도 같은 링크를 열고 같은 방 코드를 적으면 들어와요. 2명부터 시작할 수 있어요.`
     : iAmHost ? `${n}명 모였어요. 빈자리 ${8 - n}개는 컴퓨터 반이 채워요.` : `${n}명 모였어요. 방장이 시작하기를 기다리는 중…`;
   if (playing && lobby.length < 2) $("netmsg").textContent = `이 방은 이미 게임 중이에요 (${playing}명). 다른 방 코드를 써 주세요.`;
   if (lobby.length > 8) $("netmsg").textContent += " 8명까지만 들어가요.";
@@ -2752,6 +2766,7 @@ function netFinish() {
 //  · index.html 을 그냥 열면(claude.ai 밖) 공용 기능은 꺼지고 예전처럼 동작해요.
 // ============================================================
 "use strict";
+const SITE_CARDS = { "진성욱": "cards/c00.jpg", "이현": "cards/c01.jpg", "박희찬": "cards/c02.jpg", "이보경": "cards/c03.jpg", "최효민": "cards/c04.jpg", "임시온": "cards/c05.jpg", "이준희": "cards/c06.jpg", "김현우": "cards/c07.jpg", "전하율": "cards/c08.jpg", "박준서": "cards/c09.jpg", "손태민": "cards/c10.jpg", "윤동욱": "cards/c11.jpg" };
 const SHARED = { db: null, assets: null, ref: null, cards: {}, backdrop: null, shownBackdrop: null };
 const blobUrl = (id) => "/_blob/" + id;
 // 이 사람이 올리면 모두에게 보이나요? (페이지를 고칠 수 있는 사람만)
@@ -2767,6 +2782,7 @@ const BUILTIN_FIRST = new Set(["윤동욱"]);
 const sharedCard = (d) => { const n = DEFS[d].n, b = window.claude ? BUILTIN_CARDS[n] : null; return (BUILTIN_FIRST.has(n) && b) || SHARED.cards[n] || b || null; };
 
 function photosInit() {
+  if (!window.claude && typeof SITE_CARDS !== "undefined") DEFS.forEach((def, d) => { const f = SITE_CARDS[def.n]; if (f && !hasCustomCard(d)) { PORTRAIT[d] = f; BASE_PORTRAIT[d] = f; } }); // 웹 버전: 같이 올린 사진 파일
   if (window.claude) DEFS.forEach((def, d) => { const id = BUILTIN_CARDS[def.n]; if (id && !hasCustomCard(d)) PORTRAIT[d] = blobUrl(id); }); // 미리 넣어 둔 사진부터 보여요
   if (!window.claude || !window.claude.use) return;
   Promise.all([window.claude.use("db"), window.claude.use("assets")]).then(([db, assets]) => {
@@ -5498,7 +5514,7 @@ function buildUnit(sp, enemy) {
   return g;
 }
 function buildUnit0(sp, enemy) {
-  if (sp.robot) return buildRobot(enemy);
+  if (sp.robot) return buildRobot(enemy, !!sp.mega);
   if (sp.mon && sp.mon.summon) {
     const g = buildJelly(!!sp.mon.giant, enemy);
     const aura = new THREE.Mesh(GEO.ringFx, additive("#7ff0e0")); aura.rotation.x = -Math.PI / 2; aura.position.y = 0.24; aura.scale.setScalar(0.7); g.add(aura);
@@ -5618,7 +5634,7 @@ function collect(dt) {
   return out;
 }
 function placeUnit(it, dt) {
-  const g = useMesh(it.sp.robot ? "robot:" + (it.enemy ? 1 : 0) + ":" + (S.battle ? S.battle.t0 || (S.battle.t0 = Math.random()) : 0) : it.key, () => buildUnit(it.sp, it.enemy)), ud = g.userData;
+  const g = useMesh(it.sp.robot ? "robot:" + (it.enemy ? 1 : 0) + (it.sp.mega ? "m" : "") + ":" + (S.battle ? S.battle.t0 || (S.battle.t0 = Math.random()) : 0) : it.key, () => buildUnit(it.sp, it.enemy)), ud = g.userData;
   const sc = UNIT_K * (it.sp.mon ? (it.sp.mon.boss ? 1.45 : it.sp.mon.summon ? (it.sp.mon.giant ? 1.75 : 0.85) : 1.1) : [1, 1.18, 1.32, 1.48][it.sp.star] * (it.sp.robot ? (it.sp.mega ? 1.95 : 1.6) : 1.12)) * (it.bench ? 0.8 : 1); // 친구들은 12% 크게: 갑옷이 잘 보여요
   g.scale.setScalar(sc);
   // 움직임 감지 → 걷기
@@ -5698,6 +5714,12 @@ function placeUnit(it, dt) {
       const k = cb >= 0 ? (cb < 2.0 ? 2.8 : 1.6) : ud.move > 0.1 ? 1.5 : 1;
       ud.flames.forEach((m, i) => { const s = k * (0.85 + 0.25 * Math.sin(clock3d * 40 + i * 2.1)); m.scale.set(1 + (k - 1) * 0.25, s, 1 + (k - 1) * 0.25); m.position.y = 0.11 - 0.15 * s; });
       ud.ball.rotation.y += dt * 2.5; ud.core.rotation.z = Math.sin(clock3d * 1.5) * 0.15;
+      const mz = ud.sword && S.battle && S.battle.zones.find((z) => z.kind === "megasword" && z.owner === it.f);
+      if (mz) { // 초합체 대검: 칼을 높이 들어 올렸다가(빛이 모임) 한 번에 휘둘러요
+        const k = mz.t - MEGA_SLASH_AT, up = k < 0 ? Math.min(1, mz.t / 0.3) : Math.max(0, 1 - k / 0.12), down = k < 0 ? 0 : Math.min(1, k / 0.12) * Math.max(0, 1 - (k - 0.5) / 0.4);
+        ud.arms[1].rotation.set(-3.0 * up + 0.4 * down, 0, 0.25 * up - 0.9 * down); ud.torso.rotation.y = -0.6 * down;
+        ud.blade.material.emissiveIntensity = 1.4 + 4 * (k < 0 ? Math.min(1, mz.t / MEGA_SLASH_AT) : Math.max(0, 1 - k / 0.5));
+      }
     }
     ud.torso.rotation.x += (lean - ud.torso.rotation.x) * Math.min(1, dt * 18);
     if (ud.cape) ud.cape.rotation.x = 0.12 + ud.move * 0.55 + Math.sin(clock3d * 2.1 + it.x) * 0.04;
@@ -6495,7 +6517,29 @@ function drawMark(z, dt) {
   ud.rings.forEach((r, i) => { r.rotation.z += dt * (i ? -3 : 2); r.material.opacity = (0.55 + Math.sin(t * 6) * 0.2) * fade; });
   ud.cross.rotation.y += dt * 1.5; ud.cross.children.forEach((b) => (b.material.opacity = 0.6 * fade));
 }
-const ZDRAW = { net: drawNet, dance: drawDance, zap: drawZap, rend: drawRend, hearts: drawHearts, mark: drawMark, legion: drawLegion, smite: drawSmite, freekick: drawFreekick, snipe: drawFreekick, slam: drawSlam, mathrain: drawMathRain, scribble: drawScribble, goal: drawGoal, summon: drawSummon, dunk: drawDunk, tackle: drawTackle, yinyang: drawYinYang };
+// 초합체로봇 "초합체 대검": 하늘로 솟는 빛기둥 → 전장을 가로지르며 휘두르는 거대한 빛의 칼날
+function drawMegaSword(z, dt) {
+  const t = z.t, x = worldX(z.X), y = worldZ(z.Y);
+  const g = useMesh(z, () => {
+    const grp = new THREE.Group(), ud = grp.userData;
+    ud.pillar = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 14, 24, 1, true), additive("#ffe9a0")); ud.pillar.position.y = 7; grp.add(ud.pillar);
+    ud.arc = new THREE.Group(); ud.arc.position.y = 1.6; grp.add(ud.arc);
+    for (const [w, c, op] of [[2.2, "#ffd36b", 0.55], [0.9, "#bff4ff", 0.9], [0.3, "#ffffff", 1]]) {
+      const m = new THREE.Mesh(new THREE.PlaneGeometry(22, w), additive(c)); m.rotation.x = -Math.PI / 2; m.position.x = 11; m.userData.op = op; ud.arc.add(m);
+    }
+    ud.ring = new THREE.Mesh(GEO.ringFx, additive("#ffd36b")); ud.ring.rotation.x = -Math.PI / 2; ud.ring.position.y = 0.3; grp.add(ud.ring);
+    return grp;
+  });
+  const ud = g.userData; g.position.set(x, 0, y);
+  const charge = Math.min(1, t / MEGA_SLASH_AT), k = t - MEGA_SLASH_AT;
+  ud.pillar.material.opacity = k < 0 ? 0.5 * charge : Math.max(0, 0.5 * (1 - k / 0.3)); ud.pillar.scale.set(0.3 + charge * 0.8, 1, 0.3 + charge * 0.8);
+  ud.ring.scale.setScalar(1 + charge * 2 + (k > 0 ? k * 14 : 0)); ud.ring.material.opacity = k < 0 ? 0.8 * charge : Math.max(0, 0.9 * (1 - k / 0.6));
+  const sweep = Math.max(0, Math.min(1, k / 0.22)), fade = k < 0 ? 0 : Math.max(0, 1 - Math.max(0, k - 0.22) / 0.5);
+  ud.arc.rotation.y = (z.team ? Math.PI : 0) + 0.5 * Math.PI + (sweep - 0.5) * 2.6; // 한쪽 끝에서 반대쪽 끝까지 크게 휘둘러요
+  ud.arc.visible = k >= 0 && fade > 0;
+  ud.arc.children.forEach((m) => (m.material.opacity = m.userData.op * fade));
+}
+const ZDRAW = { megasword: drawMegaSword, net: drawNet, dance: drawDance, zap: drawZap, rend: drawRend, hearts: drawHearts, mark: drawMark, legion: drawLegion, smite: drawSmite, freekick: drawFreekick, snipe: drawFreekick, slam: drawSlam, mathrain: drawMathRain, scribble: drawScribble, goal: drawGoal, summon: drawSummon, dunk: drawDunk, tackle: drawTackle, yinyang: drawYinYang };
 function render3D(dt) {
   frameId++; clock3d += dt;
   const P = human();
@@ -6746,6 +6790,22 @@ function drawOverlay(dt, R) {
       const [tx, ty] = proj(crb2.combo.cx, 3.0, crb2.combo.cz);
       ctx.font = font(u0 * 1.6); ctx.textAlign = "center"; ctx.fillStyle = t < COMBO_TF ? "#cff8ff" : "#ffe9a0"; ctx.globalAlpha = 0.6 + Math.sin(t * 20) * 0.4;
       ctx.fillText(t < COMBO_TF ? "합체 준비…" : "변신!", tx, ty); ctx.globalAlpha = 1;
+    }
+  }
+  // 초합체로봇 "초합체 대검": 번쩍 + 화면 전체를 가르는 금빛 선
+  const mz = S.battle && S.battle.zones.find((z) => z.kind === "megasword");
+  if (mz) {
+    const k = mz.t - MEGA_SLASH_AT;
+    if (k < 0) { ctx.fillStyle = `rgba(20,14,0,${0.3 * Math.min(1, mz.t / MEGA_SLASH_AT)})`; ctx.fillRect(0, 0, W, H); }
+    else if (k < 0.9) {
+      const q = 1 - k / 0.9, [cx2, cy2] = proj(worldX(mz.X), 1.4, worldZ(mz.Y)), ang = mz.team ? 0.22 : -0.22, ex = Math.cos(ang), ey = Math.sin(ang);
+      if (k < 0.15) { ctx.fillStyle = `rgba(255,248,220,${(1 - k / 0.15) * 0.9})`; ctx.fillRect(0, 0, W, H); }
+      ctx.save(); ctx.lineCap = "round"; ctx.globalAlpha = q;
+      for (const [lw, col, blur] of [[u0 * 6 * (1 + k * 2), "rgba(255,190,60,.45)", 40], [u0 * 2.4, "#ffd36b", 24], [u0 * 0.8, "#ffffff", 8]]) {
+        ctx.shadowColor = "#ffd36b"; ctx.shadowBlur = blur; ctx.strokeStyle = col; ctx.lineWidth = lw;
+        ctx.beginPath(); ctx.moveTo(cx2 - ex * W * 2, cy2 - ey * W * 2); ctx.lineTo(cx2 + ex * W * 2, cy2 + ey * W * 2); ctx.stroke();
+      }
+      ctx.restore();
     }
   }
   // 김예균 "세계를 가르는 참격": 하늘이 핏빛으로 어두워지고, 참격마다 붉게 번쩍, 마지막엔 화면 전체를 가르는 선
